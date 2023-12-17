@@ -59,7 +59,7 @@ The script will create a unique experiment folder named `./experiments_<datatype
 
 ![Alt text](./result/loss_g_z2h.png)
 
-
+![Alt text](./result/loss_d_z2h.png)
 ---
 
 ## Image Generation
