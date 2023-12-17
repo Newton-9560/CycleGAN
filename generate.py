@@ -7,7 +7,8 @@ from tqdm import tqdm
 import argparse
 
 
-# python generate.py --root './expriments/lr_g-0.0002_lr_d-0.0002_lamnda_X2Y-10_lamnda_Y2X-10_epochs-100_batch_size-1_lr_decay_iters-50_reduction-mean/' --model_name 'V_Y2X.pth' --image_dirc 'vangogh2photo/trainB/'
+# python generate.py --root './experiments_z2h/1/' --model_name 'best_G_Y2X.pth' --image_dirc 'horse2zebra/trainB/'
+# python generate.py --root './experiments_z2h/1/' --model_name 'best_G_x2Y.pth' --image_dirc 'horse2zebra/trainA/'
 
 def replace_and_remove_chars(input_str):
     """
@@ -47,7 +48,7 @@ if not os.path.exists(output_directory):
 for filename in tqdm(os.listdir(image_directory), desc="processing"):
     if filename.endswith('.jpg'):  
         image_path = os.path.join(image_directory, filename)
-        image = Image.open(image_path)
+        image = Image.open(image_path).convert('RGB')
         image = transform(image).unsqueeze(0).to(torch.device('cuda'))
 
         with torch.no_grad():

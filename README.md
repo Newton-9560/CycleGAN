@@ -57,6 +57,8 @@ The script will create a unique experiment folder named `./experiments_<datatype
 - Loss graphs (`loss.png`).
 - Loss values (`losses.csv`).
 
+![Alt text](./result/loss_g_z2h.png)
+
 
 ---
 
@@ -78,3 +80,5 @@ python generate.py --root './experiments_van/1/' --model_name 'V_Y2X.pth' --imag
 ## Example
 
 ![Alt text](./result/image.png)
+
+![Alt text](./result/image_z2r.png)
