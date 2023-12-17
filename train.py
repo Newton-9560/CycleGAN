@@ -10,7 +10,7 @@ import json
 import csv
 
 
-# python train.py --datatype 'z2h' --lr_g 0.0001 --lr_d 0.0001 --lamnda_X2Y 10 --lamnda_Y2X 10 --epochs 100 --lr_decay_iters 50 --lambda_idt 0
+# python train.py --lr_g 0.0001 --lr_d 0.0001 --lamnda_X2Y 10 --lamnda_Y2X 10 --epochs 100 --lr_decay_iters 50
 # python train.py --lr_g 0.0001 --lr_d 0.0001 --lamnda_X2Y 10 --lamnda_Y2X 10 --epoch 2 --lr_decay_iters 50
 # python train.py --lr_g 0.0001 --lr_d 0.0001 --lamnda_X2Y 10 --lamnda_Y2X 10 --epochs 100 --lr_decay_iters 50
 
@@ -40,23 +40,18 @@ opt = parser.parse_args()
 file_paths = data_process.generate_txt(opt.datatype)
 
 
-# 创建基础文件夹路径
 base_folder = './experiments_' + opt.datatype
 
-# 确保基础文件夹存在
 if not os.path.exists(base_folder):
     os.makedirs(base_folder)
 
-# 获取已存在的子文件夹，并找出下一个可用的数字
 existing_folders = [f for f in os.listdir(base_folder) if os.path.isdir(os.path.join(base_folder, f))]
 existing_numbers = [int(folder) for folder in existing_folders if folder.isdigit()]
 next_folder_number = max(existing_numbers) + 1 if existing_numbers else 1
 
-# 创建新的数字命名文件夹
 folder_name = os.path.join(base_folder, str(next_folder_number))
 os.makedirs(folder_name)
 
-# 将 opt 参数保存为 JSON 文件
 with open(os.path.join(folder_name, 'options.json'), 'w') as json_file:
     json.dump(vars(opt), json_file, indent=4)
     
@@ -101,6 +96,8 @@ images_X = next(test_X_iter).to(opt.device)
 best_loss_g = 100
 
 for epoch in range(opt.epochs):
+    
+    best_epoch_loss_g = 100
 
     for i, data_Y in enumerate(train_Y_dataloader):
         data_X =  next(iter(train_X_dataloader)).to(device)
@@ -110,6 +107,11 @@ for epoch in range(opt.epochs):
             best_loss_g = loss[0]
             model.save_model('Y', folder_name)
             model.save_model('X', folder_name)
+            
+        if loss[0] < best_epoch_loss_g:
+            best_epoch_loss_g = loss[0]
+            model.save_model('Y', folder_name, str(epoch))
+            model.save_model('X', folder_name, str(epoch))
             
         
         if i%1200 == 0:
@@ -127,6 +129,8 @@ for epoch in range(opt.epochs):
     generated_X = model.generate_X(images_Y)
     generated_Y = model.generate_Y(images_X)
     data_process.show_generated(images_X, images_Y, generated_X, generated_Y, save = folder_name + '/' + 'images_result' + '/epoch' + str(epoch) + '.png')
+    
+
         
 
 

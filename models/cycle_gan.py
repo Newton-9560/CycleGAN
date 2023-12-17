@@ -140,10 +140,10 @@ class CycleGAN():
         self.scheduler_g.step()
         self.scheduler_d.step()
 
-    def save_model(self, mode, path):
+    def save_model(self, mode, path, type = 'lowest'):
         if mode == 'X':
-            torch.save(self.generator_Y2X, path + '/models/best_G_Y2X.pth')
-            print(f"Best Optimizer G_Y2X saved!")
+            torch.save(self.generator_Y2X, path + '/models/' + type + '_G_Y2X.pth')
+            print(f"Generotor G_Y2X saved![" + type + ']')
         else:
-            torch.save(self.generator_X2Y, path + '/models/best_G_x2Y.pth')
-            print(f"Best Optimizer G_X2Y saved!")
+            torch.save(self.generator_X2Y, path + '/models/' + type + '_G_X2Y.pth')
+            print(f"Generotor G_X2Y saved![" + type + ']')
