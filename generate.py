@@ -7,7 +7,8 @@ from tqdm import tqdm
 import argparse
 
 
-# python generate.py --root './experiments/lr_g-0.0002_lr_d-0.0002_lamnda_X2Y-10_lamnda_Y2X-10_epochs-100_batch_size-1_lr_decay_iters-50_reduction-mean/' --model_name 'V_Y2X.pth' --image_dirc 'photo_mine/'
+# python generate.py --root './experiments_van/2/' --model_name '62_G_Y2X.pth' --image_dirc 'photo_mine/'
+# python generate.py --root './experiments_van/2/' --model_name '62_G_Y2X.pth' --image_dirc 'photo_mine/'
 # python generate.py --root './experiments_z2h/1/' --model_name 'best_G_x2Y.pth' --image_dirc 'horse2zebra/trainA/'
 
 def replace_and_remove_chars(input_str):

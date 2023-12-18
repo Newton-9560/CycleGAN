@@ -15,9 +15,11 @@ def set_grads(required, notrequired):
                 param.requires_grad = False
 
 
-def loss_GAN(prediction, target, reduction='mean'):
-    loss = nn.MSELoss(reduction=reduction)
-    # loss = nn.BCEWithLogitsLoss()
+def loss_GAN(prediction, target, mode = 'ori_gan'):
+    if mode == 'wgan':
+        loss = nn.MSELoss()
+    else:
+        loss = nn.BCEWithLogitsLoss()
     return loss(prediction, torch.full_like(prediction, target))
 
 
@@ -49,9 +51,9 @@ class CycleGAN():
         self.generator_Y2X = networks.GeneratorResnet(opt.d_input_nc, opt.d_input_nc, ngf=64, use_dropout=False,
                                                       n_blocks=6).to(torch.device('cuda'))
         self.discriminator_X = networks.Discriminator(
-            opt.g_input_nc, ndf=64, n_layers=3).to(torch.device('cuda'))
+            opt.g_input_nc, ndf=64, n_layers=3, train_mode = opt.train_mode).to(torch.device('cuda'))
         self.discriminator_Y = networks.Discriminator(
-            opt.g_input_nc, ndf=64, n_layers=3).to(torch.device('cuda'))
+            opt.g_input_nc, ndf=64, n_layers=3, train_mode = opt.train_mode).to(torch.device('cuda'))
 
         self.optimizer_G = torch.optim.Adam(
             list(self.generator_X2Y.parameters()) + list(self.generator_Y2X.parameters()), lr=opt.lr_g)

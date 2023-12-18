@@ -10,7 +10,7 @@ import json
 import csv
 
 
-# python train.py --lr_g 0.0001 --lr_d 0.0001 --lamnda_X2Y 10 --lamnda_Y2X 10 --epochs 100 --lr_decay_iters 50
+# python train.py --datatype 'z2h' --train_mode 'ori_gan' --lr_g 0.0001 --lr_d 0.0001 --lamnda_X2Y 10 --lamnda_Y2X 10 --epochs 50 --lr_decay_iters 50
 # python train.py --lr_g 0.0001 --lr_d 0.0001 --lamnda_X2Y 10 --lamnda_Y2X 10 --epoch 2 --lr_decay_iters 50
 # python train.py --lr_g 0.0001 --lr_d 0.0001 --lamnda_X2Y 10 --lamnda_Y2X 10 --epochs 100 --lr_decay_iters 50
 
@@ -21,6 +21,7 @@ std = [0.5, 0.5, 0.5]
 
 parser = argparse.ArgumentParser(description="Setup parameters for CycleGAN.")
 parser.add_argument('--datatype', type=str, default='van', help='The dayatype: van denotes vangogh2photo and z2h denotes zebra to horse')
+parser.add_argument('--train_mode', type=str, default='wgan')
 parser.add_argument('--g_input_nc', type=int, default=3, help='number of input channels for generator')
 parser.add_argument('--g_output_nc', type=int, default=3, help='number of output channels for generator')
 parser.add_argument('--d_input_nc', type=int, default=3, help='number of input channels for discriminator')
@@ -32,7 +33,6 @@ parser.add_argument('--lamnda_Y2X', type=int, default=10, help='lambda for Y to 
 parser.add_argument('--epochs', type=int, default=1, help='number of epochs')
 parser.add_argument('--batch_size', type=int, default=1, help='number of batch_size')
 parser.add_argument('--lr_decay_iters', type=int, default=0, help='epoch at which to start lr decay')
-parser.add_argument('--reduction', type=str, default='mean') 
 parser.add_argument('--lambda_idt', type=float, default=0.5)
 
 opt = parser.parse_args()

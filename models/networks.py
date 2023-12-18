@@ -101,7 +101,7 @@ class GeneratorResnet(nn.Module):
 class Discriminator(nn.Module):
     """Defines a PatchGAN discriminator"""
 
-    def __init__(self, input_nc, ndf=64, n_layers=3):
+    def __init__(self, input_nc, ndf=64, n_layers=3, train_mode = 'wgan'):
         """Construct a PatchGAN discriminator
 
         Parameters:
@@ -111,6 +111,8 @@ class Discriminator(nn.Module):
             norm_layer      -- normalization layer
         """
         super(Discriminator, self).__init__()
+        
+        self.train_mode = train_mode
         
 
         model = [nn.Conv2d(input_nc, ndf, kernel_size=4, stride=2, padding=1), nn.LeakyReLU(0.2, True)]
@@ -138,4 +140,8 @@ class Discriminator(nn.Module):
 
     def forward(self, input):
         """Standard forward."""
-        return self.model(input)
+        if self.train_mode == 'wgan':
+            return self.model(input)
+        else:
+            m = nn.Sigmoid()
+            return m(self.model(input))
